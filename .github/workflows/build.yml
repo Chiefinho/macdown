@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build:
+    # Apple Silicon runner; the Release build is Universal (arm64 + x86_64).
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler: latest
+          bundler-cache: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install pods
+        run: bundle exec pod install
+
+      - name: Test
+        run: |
+          set -o pipefail
+          xcodebuild -workspace MacDown.xcworkspace -scheme MacDown \
+            -destination 'platform=macOS,arch=arm64' \
+            CODE_SIGNING_ALLOWED=NO test
+
+      - name: Build Universal Release
+        run: |
+          set -o pipefail
+          xcodebuild -workspace MacDown.xcworkspace -scheme MacDown \
+            -configuration Release -destination 'generic/platform=macOS' \
+            -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+          lipo -info build/Build/Products/Release/MacDown.app/Contents/MacOS/MacDown | grep -q arm64

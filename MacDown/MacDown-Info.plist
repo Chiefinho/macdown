@@ -88,12 +88,14 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleBuildVersion</key>
+	<string>MP_BUILD_VERSION</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1</string>
+	<string>MP_SHORT_VERSION</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>MP_BUNDLE_VERSION</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
