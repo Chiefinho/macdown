@@ -1,7 +1,20 @@
 #!/bin/bash
 
-if [ "$CI" == "true" ]; then
-    echo "Skipping build number update script under CI."
+# Writes the version into a header that Xcode uses when preprocessing
+# Info.plist (INFOPLIST_PREFIX_HEADER). Editing the built Info.plist directly
+# does not work with the new build system, which processes Info.plist after
+# this phase and overwrites the edits.
+HEADER="${DERIVED_FILE_DIR}/MPInfoPlistVersion.h"
+mkdir -p "$(dirname "$HEADER")"
+
+write_header() {
+    printf '#define MP_BUILD_VERSION %s\n#define MP_SHORT_VERSION %s\n#define MP_BUNDLE_VERSION %s\n' \
+        "$1" "$2" "$3" > "$HEADER"
+}
+
+if [ "${CI:-}" == "true" ]; then
+    echo "Using placeholder version under CI (shallow clone has no tags)."
+    write_header "ci" "$(cat "$(dirname "$0")/version.txt")" "1"
     exit 0
 fi
 
@@ -28,9 +41,5 @@ BUNDLE_VERSION=$(get_bundle_version)
 # but old Xcodes don't have this.
 #GIT=$(xcrun -find git)
 
-# Run Script build phases that operate on product files of the target that defines them should use the value of this build setting [TARGET_BUILD_DIR]. But Run Script build phases that operate on product files of other targets should use “BUILT_PRODUCTS_DIR” instead.
-INFO_PLIST="${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"
-
-/usr/libexec/PlistBuddy -c "Add :CFBundleBuildVersion string $BUILD_VERSION" "$INFO_PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Set :CFBundleBuildVersion $BUILD_VERSION" "$INFO_PLIST"
-/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $SHORT_VERSION" "$INFO_PLIST"
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUNDLE_VERSION" "$INFO_PLIST"
+write_header "$BUILD_VERSION" "$SHORT_VERSION" "$BUNDLE_VERSION"
+echo "Version: $SHORT_VERSION ($BUNDLE_VERSION), build $BUILD_VERSION"

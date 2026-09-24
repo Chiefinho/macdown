@@ -906,13 +906,13 @@
 			buildConfigurationList = 1FA6DE551941CC9E000409FB /* Build configuration list for PBXNativeTarget "MacDown" */;
 			buildPhases = (
 				B4334ECDC0751C835C1600D7 /* [CP] Check Pods Manifest.lock */,
+				1F8A82A81952F19B00B6BF69 /* Update Build Number */,
 				A1B2C3D4E5F60718293A4B5C /* Generate Markdown Highlight Parser */,
 				1FA6DE1D1941CC9E000409FB /* Sources */,
 				1FA6DE1E1941CC9E000409FB /* Frameworks */,
 				1FF16580199A6C950080D9A5 /* Fetch Prism Resources */,
 				E7FD807B2106CA8F0087F0A8 /* Transpile Styles */,
 				1FA6DE1F1941CC9E000409FB /* Resources */,
-				1F8A82A81952F19B00B6BF69 /* Update Build Number */,
 				905EF1B6196164E300FC3CE9 /* Copy Command Line Utility */,
 				C5B8C48273E72106885CA8C4 /* [CP] Embed Pods Frameworks */,
 				1E02F0A95AAEBCEF65493F5F /* [CP] Copy Pods Resources */,
@@ -1125,9 +1125,11 @@
 			);
 			name = "Update Build Number";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/MPInfoPlistVersion.h",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
+			alwaysOutOfDate = 1;
 			shellScript = "bash Tools/update_build_number.sh\n";
 			showEnvVarsInLog = 0;
 		};
@@ -1774,6 +1776,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MacDown/Code/MacDown-Prefix.pch";
 				INFOPLIST_FILE = "MacDown/MacDown-Info.plist";
+				INFOPLIST_PREFIX_HEADER = "$(DERIVED_FILE_DIR)/MPInfoPlistVersion.h";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-C";
+				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uranusjr.${PRODUCT_NAME:rfc1034identifier:lower}-debug";
 				PRODUCT_NAME = MacDown;
@@ -1792,6 +1797,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MacDown/Code/MacDown-Prefix.pch";
 				INFOPLIST_FILE = "MacDown/MacDown-Info.plist";
+				INFOPLIST_PREFIX_HEADER = "$(DERIVED_FILE_DIR)/MPInfoPlistVersion.h";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-C";
+				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.uranusjr.${PRODUCT_NAME:rfc1034identifier:lower}";
 				PRODUCT_NAME = MacDown;
