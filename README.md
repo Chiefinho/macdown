@@ -49,9 +49,10 @@ The following editor themes and CSS files are extracted from [Mou](http://mouapp
 
 If you wish to build MacDown yourself, you will need the following components/tools:
 
-* OS X SDK (10.14 or later)
+* Xcode 15 or later (macOS 12.0 deployment target; builds Universal for Apple Silicon and Intel)
 * Git
-* [Bundler](http://bundler.io)
+* [Bundler](http://bundler.io) with Ruby 3.x
+* Node.js and npm (used to generate the GitHub style sheet during the build)
 
 > Note: Old versions of CocoaPods are not supported. Please use Bundler to execute CocoaPods, or make sure your CocoaPods is later than shown in `Gemfile.lock`.
 
@@ -61,7 +62,7 @@ If you wish to build MacDown yourself, you will need the following components/to
 >
 > and report back.
 
-An appropriate SDK should be bundled with Xcode 5 or later versions.
+The macOS SDK is bundled with Xcode.
 
 ### Environment Setup
 
